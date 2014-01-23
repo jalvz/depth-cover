@@ -7,7 +7,8 @@ Fast Depth of Coverage Analyser (for BAM, BED files)
 
 Installation and execution:
 
-    Download the file depth-cover.jar and execute with java:
+    Download the program (Download ZIP botton) and unzip it. 
+    To run the program execute with java -jar the file depth-cover.jar:
     
     java -XmxMAX_MEMORY_ALLOCATION -XX:+UseParallelGC -jar depth-cover.jar -bam BAM_FILE [OPTIONS]
     
