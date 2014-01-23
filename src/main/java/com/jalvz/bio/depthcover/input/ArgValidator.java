@@ -11,7 +11,7 @@ public class ArgValidator {
 	
 	private static final Logger logger = Logger.getLogger(ArgValidator.class.getName());
 	
-	public static final double MIN_MEM_REQUIRED_FACTOR = 0.12d;
+	public static final double MIN_MEM_REQUIRED_FACTOR = 0.10d;
 	
 	public static final double MIN_PARALLEL_REQUIRED_FACTOR = 0.5d;
 
@@ -26,7 +26,7 @@ public class ArgValidator {
 			logger.error("Can not write to " + output.getAbsolutePath() +  ": file(s) already exists. " 
 					+ "Please specify a different output, i.e.: java -Xmx" + ( Runtime.getRuntime().maxMemory() / 900000) 
 					+ "m -jar " + jar() + " " + alternativeOut(output, p, cmd));
-		} else if (!checkMinConfig(input)) {
+		} else if (!cmd.contains("-bed") && !checkMinConfig(input)) {
 			logger.error("Not enough memory: Please increase memory allocation, i.e.: java -Xmx" 
 					+ (input.length() / 4000000) + "m -jar " + jar() + " " + cmd);
 		} else {
