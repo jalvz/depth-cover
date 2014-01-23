@@ -11,9 +11,9 @@ public class ArgValidator {
 	
 	private static final Logger logger = Logger.getLogger(ArgValidator.class.getName());
 	
-	public static final double MIN_MEM_REQUIRED_FACTOR = 0.10d;
+	public static final double MIN_MEM_REQUIRED_FACTOR = 0.1d;
 	
-	public static final double MIN_PARALLEL_REQUIRED_FACTOR = 0.5d;
+	public static final double MIN_PARALLEL_REQUIRED_FACTOR = 0.4d;
 
 
 	public static void smoke(File input, String p, File output, String cmd) {
