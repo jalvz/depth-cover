@@ -5,7 +5,7 @@ Fast Depth of Coverage Analyser (for BAM, BED files)
 
 
 
-Installation and execution:
+**Installation and execution:**
 
     Download the program (Download ZIP botton) and unzip it. 
     To run the program execute with java -jar the file depth-cover.jar:
@@ -18,7 +18,7 @@ Installation and execution:
 
 
 
-Usage:
+**Usage:**
 
     depth-cover consumes files in BAM format. Optionally, it accepts a BED file for interval calculations
     and a FASTA file to remove the Ns in the reference from calculation.
@@ -35,7 +35,7 @@ Usage:
 
 
 
-Performance and requirements:
+**Performance and requirements:**
 
     depth-cover is several orders of magnitude faster than other tools. Execution time and memory 
     consumption depends on the size of the BAM file.
@@ -54,7 +54,7 @@ Performance and requirements:
     
 
 
-Note for developers:
+**Note for developers:**
 
     Not all the resources for unit tests are included. This means that if you try to run 'mvn install' 
     it will fail. The missing resources are available on request.
