@@ -7,11 +7,11 @@ Fast Depth of Coverage Analyser (for BAM, BED files)
 
 **Installation and execution:**
 
-    Download the program (Download ZIP botton) and unzip it. 
-    To run the program execute with java -jar the file depth-cover.jar:
+    Download the program ('Download ZIP button') and unzip it. 
+    Execute with:
     
     java -XmxMAX_MEMORY_ALLOCATION -XX:+UseParallelGC -jar depth-cover.jar -bam BAM_FILE [OPTIONS]
-    
+
     The options are explained in the help. To see the help, just type:
     
     java -jar depth-cover.jar
@@ -41,7 +41,9 @@ Fast Depth of Coverage Analyser (for BAM, BED files)
     consumption depends on the size of the BAM file.
     
     Recommended memory allocation is 20% - 50% of the size of the BAM file - i.e.: if your BAM is 10Gb,
-    execute like java -Xmx2g -XX:+UseParallelGC -jar depth-cover.jar ...
+    execute like: 
+    
+    java -Xmx2g -XX:+UseParallelGC -jar depth-cover.jar ...
     
     The JVM option -XX:+UseParallelGC is not mandatory, but usually is a good idea (particularly, if 
     memory is a scarce resource).
