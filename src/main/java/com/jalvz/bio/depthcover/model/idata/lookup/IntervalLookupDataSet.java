@@ -42,7 +42,7 @@ public class IntervalLookupDataSet {
 	/*
  	 * Intervals are identified by [start pos, lenght]
 	 */
-	public boolean containsSL(String referenceName, int[] interval) {
+	public final boolean containsSL(String referenceName, int[] interval) {
 		for (IntervalLookupData intervalLookupData : new RefIterator(referenceName)) {
 			if (intersectsSE(new int[]{interval[0], interval[0] + interval[1] - 1}, intervalLookupData.getInterval())) {
 				return true;
@@ -55,7 +55,7 @@ public class IntervalLookupDataSet {
 	/*
  	 * Intervals are identified by [start pos, end pos]
 	 */
-	public List<IntervalData> intersectionsSE(String sample, String ref, int[] interval) {
+	public final List<IntervalData> intersectionsSE(String sample, String ref, int[] interval) {
 		List<IntervalData> intersections = Lists.newArrayList();
 		for (IntervalLookupData intervalLookupData : new RefIterator(ref)) {
 			String intervalId = intervalLookupData.getId();
@@ -75,7 +75,7 @@ public class IntervalLookupDataSet {
 	 * Intervals are identified by [start pos, end pos]
 	 * Result interval is expressed as [closed, open)
 	 */
-	public int[] intersectionSE(int[] interval, int[] lookup) {
+	public final int[] intersectionSE(int[] interval, int[] lookup) {
 		if (!intersectsSE(interval, lookup)) {
 			throw new IllegalArgumentException("intervals [" + interval[0] + "," + interval[1] + "] , [" + lookup[0] + "," + lookup[1] + "] do not overlap");
 		}

@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.jalvz.bio.depthcover.ExitStatus;
 import com.jalvz.bio.depthcover.util.Timer;
 
 
@@ -53,7 +52,7 @@ public class IntervalDataBuilder {
 	/*
 	 * Intervals are identified by [start pos, end pos]
 	 */
-	public IntervalDataBuilder addIntervalSE(int[] interval) {
+	public final IntervalDataBuilder addIntervalSE(int[] interval) {
 		data.openings.add(interval[0]);
 		data.closings.add(interval[1]);
 		data.totalLenght += (interval[1] - interval[0]);
@@ -64,7 +63,7 @@ public class IntervalDataBuilder {
 	/*
 	 * Intervals are identified by [start pos, lenght]
 	 */
-	public IntervalDataBuilder addIntervalSL(int[] interval) {
+	public final IntervalDataBuilder addIntervalSL(int[] interval) {
 		data.openings.add(interval[0]);
 		data.closings.add(interval[0] + interval[1]);
 		data.totalLenght += (interval[1]);
@@ -75,7 +74,7 @@ public class IntervalDataBuilder {
 	/*
 	 * Intervals are identified by [start pos, end]
 	 */
-	public IntervalDataBuilder addAllIntervalsSE(List<int[]> intervals) {
+	public final IntervalDataBuilder addAllIntervalsSE(List<int[]> intervals) {
 		for (int[] interval : intervals) {
 			addIntervalSE(new int[]{interval[0], interval[1]});
 		}
