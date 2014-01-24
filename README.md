@@ -37,17 +37,17 @@ Usage:
 
 Performance and requirements:
 
-    depth-cover is several orders of magnitude faster than other tools. Execution time and memory consumption
-    depends on the size of the BAM file.
+    depth-cover is several orders of magnitude faster than other tools. Execution time and memory 
+    consumption depends on the size of the BAM file.
     
     Recommended memory allocation is 20% - 50% of the size of the BAM file - i.e.: if your BAM is 10Gb,
     execute like java -Xmx2g -XX:+UseParallelGC -jar depth-cover.jar ...
     
-    The JVM option -XX:+UseParallelGC is not mandatory, but usually is a good idea (particularly, if memory
-    is a scarce resource).
+    The JVM option -XX:+UseParallelGC is not mandatory, but usually is a good idea (particularly, if 
+    memory is a scarce resource).
     
-    If the BAM file is bigger than 4 Gb, it is indexed and there is enough memory, depth-cover will read the 
-    chromosomes in parallel, performing 50% faster in some cases. 
+    If the BAM file is bigger than 4 Gb, it is indexed and there is enough memory, depth-cover will read
+    the chromosomes in parallel, performing 50% faster in some cases. 
     
     The parallel reader makes intensive use of CPU and RAM. 
     If you use a shared computer, you might want to disable it with the --ignore-index option.
@@ -56,5 +56,5 @@ Performance and requirements:
 
 Note for developers:
 
-    Not all the resources for unit tests are included. This means that if you try to run 'mvn clean install' it will fail. 
-    The missing resources are available on request.
+    Not all the resources for unit tests are included. This means that if you try to run 'mvn install' 
+    it will fail. The missing resources are available on request.
