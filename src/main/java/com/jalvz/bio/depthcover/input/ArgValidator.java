@@ -24,8 +24,7 @@ public class ArgValidator {
 			logger.error("Can not write to " + output.getAbsolutePath() +  ": file is a directory or not write permissions."); 
 		} else if (!checkOutput(output, p)) {
 			logger.error("Can not write to " + output.getAbsolutePath() +  ": file(s) already exists. " 
-					+ "Please specify a different output, i.e.: java -Xmx" + ( Runtime.getRuntime().maxMemory() / 900000) 
-					+ "m -jar " + jar() + " " + alternativeOut(output, p, cmd));
+					+ "Please specify a different output.");
 		} else if (!cmd.contains("-bed") && !checkMinConfig(input)) {
 			logger.error("Not enough memory: Please increase memory allocation, i.e.: java -Xmx" 
 					+ (input.length() / 4000000) + "m -jar " + jar() + " " + cmd);
@@ -61,23 +60,6 @@ public class ArgValidator {
 	
 	private static boolean checkMinConfig(File file) {
 		return MIN_MEM_REQUIRED_FACTOR * file.length() <  Runtime.getRuntime().maxMemory();
-	}
-	
-
-	private static String alternativeOut(File f, String p, String cmd) {
-		if (cmd.contains(" " + p) && cmd.contains(" -n ")) {
-			return cmd.replaceAll(p, generateOut(f, p));
-		}
-		return cmd + generateOut(f, p);
-	}
-
-	
-	private static String generateOut(File f, String p) {
-		if (checkOutput(f, p)) {
-			return p;
-		} else {
-			return generateOut(f, p + "_0");
-		}
 	}
 	
 	
