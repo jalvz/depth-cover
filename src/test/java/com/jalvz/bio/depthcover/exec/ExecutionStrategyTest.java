@@ -42,31 +42,19 @@ public class ExecutionStrategyTest {
 	@Test
 	public void testSingle() {
 		SequenceReader reader = strategy.getSequenceReader(false);
-		assertTrue(reader instanceof ContinuousSequenceReader);
+		assertTrue(reader instanceof ParallelSequenceReader);
 		
 		reader = strategy.getSequenceReader(true);
 		assertTrue(reader instanceof ContinuousSequenceReader);
 	}
 
 	
-	@Test
-	public void testFileSmall() {
-		SequenceReader reader = new ExecutorStrategy(samFile, recipient()) {
-			@Override
-			protected boolean fileIsBig(File file) {
-				return false;
-			};
-		}.getSequenceReader(false);
-		assertTrue(reader instanceof ContinuousSequenceReader);
-	}
-
-
 	
 	@Test
 	public void testParallel() {
 		SequenceReader reader = new ExecutorStrategy(samFile, recipient()) {
 			@Override
-			protected boolean fileIsBig(File file) {
+			protected boolean parallelizable(boolean forceSequentialRead) {
 				return true;
 			};
 		}.getSequenceReader(false);
@@ -78,8 +66,8 @@ public class ExecutionStrategyTest {
 	public void testNotIndex() {
 		SequenceReader reader = new ExecutorStrategy(notIndexedFile(), recipient()) {
 			@Override
-			protected boolean fileIsBig(File file) {
-				return true;
+			protected boolean parallelizable(boolean forceSequentialRead) {
+				return false;
 			};
 		}.getSequenceReader(false);
 		assertTrue(reader instanceof ContinuousSequenceReader);
@@ -107,11 +95,11 @@ public class ExecutionStrategyTest {
 	
 	@Test
 	public void testPartialReader() {
-		SequenceReader reader1 = strategy.getPartialSequenceReader(new IntervalLookupDataSet());
+		SequenceReader reader1 = strategy.getPartialSequenceReader(new IntervalLookupDataSet(), false);
 		assertTrue(reader1 instanceof FilteredSequenceReader);
 		
 		SequenceReader reader2 = new ExecutorStrategy(notIndexedFile(), recipient()).getPartialSequenceReader(
-				new IntervalLookupDataSet());
+				new IntervalLookupDataSet(), true);
 		assertTrue(reader2 instanceof SkipableSequenceReader);
 	}
 	
@@ -119,18 +107,6 @@ public class ExecutionStrategyTest {
 	@Test
 	public void testIntervalLookupReader() {
 		assertTrue(new ExecutorStrategy(samFile, recipient()).getIntervalLookupReader(bedFile()) instanceof IntervalLookupDataReader);
-	}
-	
-	
-	@Test
-	public void testCPUCapacity() {
-		SequenceReader reader = new ExecutorStrategy(samFile, recipient()) {
-			@Override
-			protected boolean fileIsBig(File file) {
-				return true;
-			};
-		}.getSequenceReader(false);
-		assertTrue(reader instanceof ParallelSequenceReader);
 	}
 	
 	

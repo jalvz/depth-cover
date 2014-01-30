@@ -2,10 +2,10 @@ package com.jalvz.bio.depthcover.ds.queue;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-import com.jalvz.bio.depthcover.model.idata.IntervalDataBuilder;
+import com.jalvz.bio.depthcover.model.idata.IntervalData;
 
 
-public class CloseableQueue extends ArrayBlockingQueue<IntervalDataBuilder> implements Closeable {
+public class CloseableQueue extends ArrayBlockingQueue<IntervalData> implements Closeable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public class CloseableQueue extends ArrayBlockingQueue<IntervalDataBuilder> impl
 	
 	
 	@Override
-	public void put(IntervalDataBuilder e) throws InterruptedException {
+	public void put(IntervalData e) throws InterruptedException {
 		if (isClosed()) {
 			throw new UnsupportedOperationException("Queue is closed, no more elements can be added.");
 		}

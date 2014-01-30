@@ -1,11 +1,19 @@
 package com.jalvz.bio.depthcover.model.idata;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.google.common.collect.Lists;
+import com.jalvz.bio.depthcover.util.Timer;
 
 public class IntervalData implements Iterable<int[]> {
+	
+	private static final Logger logger = Logger.getLogger(IntervalData.class.getName());
+
 
 	protected final List<Integer> openings;
 	
@@ -121,5 +129,29 @@ public class IntervalData implements Iterable<int[]> {
 		}
 		
 	}
+
+
+	/**
+	 * This method needs to be called to ensure object consistency.
+	 * Ideally, this should be handled in the Builder object.
+	 * It is not for performance reasons.
+	 */
+	public void prepare() {
+		Timer timer = new Timer();
+		sort(closings);
+		sort(openings);
+		logger.trace("Sorting time = " + timer.elapsedTime() + " ms");
+	}
 	
+	
+	
+	private void sort(List<Integer> list) {
+		Collections.sort(list, new Comparator<Integer>() {
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				return o2.compareTo(o1);
+			}
+		});
+	}
+
 }

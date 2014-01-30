@@ -20,7 +20,7 @@ public class ClosableQueueTest {
 	@Test
 	public void testClosingBehaviour() throws InterruptedException {
 		assertFalse(queue.isClosed());
-		queue.put(new IntervalDataBuilder("", "", 0, 10).addIntervalSL(new int[]{1,1}));
+		queue.put(new IntervalDataBuilder("", "", 0, 10).addIntervalSL(new int[]{1,1}).build());
 		assertFalse(queue.isClosed());
 		queue.close();
 		assertTrue(queue.isClosed());
@@ -30,11 +30,11 @@ public class ClosableQueueTest {
 	public void testFinished() throws InterruptedException {
 		assertTrue(queue.notFinished());
 		
-		queue.put(new IntervalDataBuilder("", "", 0, 10).addIntervalSL(new int[]{1,1}));
+		queue.put(new IntervalDataBuilder("", "", 0, 10).addIntervalSL(new int[]{1,1}).build());
 		queue.poll();
 		assertTrue(queue.notFinished());
 		
-		queue.put(new IntervalDataBuilder("", "", 0, 10).addIntervalSL(new int[]{1,1}));
+		queue.put(new IntervalDataBuilder("", "", 0, 10).addIntervalSL(new int[]{1,1}).build());
 		queue.close();
 		assertTrue(queue.notFinished());
 
@@ -45,9 +45,9 @@ public class ClosableQueueTest {
 	
 	@Test(expected = UnsupportedOperationException.class)
 	public void testAddWhenClosed1() throws InterruptedException {
-		queue.put(new IntervalDataBuilder("", "", 0, 10).addIntervalSL(new int[]{1,1}));
+		queue.put(new IntervalDataBuilder("", "", 0, 10).addIntervalSL(new int[]{1,1}).build());
 		queue.close();
-		queue.put(new IntervalDataBuilder("", "", 0, 10).addIntervalSL(new int[]{1,1}));
+		queue.put(new IntervalDataBuilder("", "", 0, 10).addIntervalSL(new int[]{1,1}).build());
 	}
 	
 

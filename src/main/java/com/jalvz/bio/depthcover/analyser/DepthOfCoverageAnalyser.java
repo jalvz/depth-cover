@@ -13,7 +13,7 @@ import com.jalvz.bio.depthcover.analyser.calc.StandardCoverageCalculator;
 import com.jalvz.bio.depthcover.analyser.calc.StepCoverageCalculator;
 import com.jalvz.bio.depthcover.ds.queue.CloseableQueue;
 import com.jalvz.bio.depthcover.model.cdata.CoverageDataResult;
-import com.jalvz.bio.depthcover.model.idata.IntervalDataBuilder;
+import com.jalvz.bio.depthcover.model.idata.IntervalData;
 import com.jalvz.bio.depthcover.writer.StatefulResultWriter;
 
 
@@ -58,9 +58,10 @@ public class DepthOfCoverageAnalyser implements Runnable {
 	private void process() {
 		while (queue.notFinished()) {
 			try {
-				IntervalDataBuilder idata = queue.poll(3,TimeUnit.SECONDS);
+				IntervalData idata = queue.poll(3,TimeUnit.SECONDS);
 				if (idata != null) {
-					result.set(coverage.calculate(idata.build()));
+					idata.prepare();
+					result.set(coverage.calculate(idata));
 				}
 			} catch (Throwable e) {
 				logger.info(e.getMessage(), e);

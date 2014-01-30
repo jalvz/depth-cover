@@ -12,6 +12,8 @@ public class IntervalDataFixture {
 		for (int idx = 0; idx < evt.length; idx=idx+2) {
 			builder.addIntervalSL(new int[]{evt[idx], evt[idx+1]});
 		}
-		return builder.build();
+		IntervalData idata = builder.build();
+		idata.prepare();
+		return idata;
 	}
 }

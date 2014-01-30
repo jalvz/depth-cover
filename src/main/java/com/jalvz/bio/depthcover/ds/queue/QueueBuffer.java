@@ -54,7 +54,7 @@ public class QueueBuffer {
 
 	
 	private void send(IntervalDataBuilder data) throws InterruptedException {
-		queue.put(data);
+		queue.put(data.build());
 		pointer += 1;
 	}
 

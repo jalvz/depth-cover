@@ -14,6 +14,9 @@ public class ArgValidator {
 	public static final double MIN_MEM_REQUIRED_FACTOR = 0.1d;
 	
 	public static final double MIN_PARALLEL_REQUIRED_FACTOR = 0.4d;
+	
+	private static final long FILE_SIZE_THRESHOLD = 4000000000L; // 4GB
+	
 
 
 	public static void smoke(File input, String p, File output, String cmd) {
@@ -24,9 +27,9 @@ public class ArgValidator {
 			logger.error("Can not write to " + output.getAbsolutePath() +  ": file is a directory or not write permissions."); 
 		} else if (!checkOutput(output, p)) {
 			logger.error("Can not write to " + output.getAbsolutePath() +  ": file(s) already exists. " 
-					+ "Please specify a different output.");
+					+ "Please specify a different output, i.e.: " + generateOut(output, p));
 		} else if (!cmd.contains("-bed") && !checkMinConfig(input)) {
-			logger.error("Not enough memory: Please increase memory allocation, i.e.: java -Xmx" 
+			logger.error("Not enough memory: Please increase memory allocation, i.e.: java -XX:+UseParallelGC -Xmx" 
 					+ (input.length() / 4000000) + "m -jar " + jar() + " " + cmd);
 		} else {
 			ok = true;
@@ -40,8 +43,20 @@ public class ArgValidator {
 	
 	
 	
-	public static boolean forceSequentialRead(File file) {
-		return MIN_PARALLEL_REQUIRED_FACTOR * file.length() > Runtime.getRuntime().maxMemory();
+	public static boolean forceSequentialRead(File bam) {
+		return notEnoughMem(bam) || bamIsSmall(bam);
+	}
+
+	
+	
+	
+	private static boolean bamIsSmall(File file) {
+		return file.length() < FILE_SIZE_THRESHOLD;
+	}
+	
+	
+	private static boolean notEnoughMem(File file) {
+		return MIN_PARALLEL_REQUIRED_FACTOR * file.length() > Runtime.getRuntime().maxMemory(); 
 	}
 	
 
@@ -65,6 +80,23 @@ public class ArgValidator {
 	
 	private static String jar() {
 		return ArgValidator.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+	}
+	
+	
+	private static String alternativeOut(File f, String p, String cmd) {
+		if (cmd.contains(" " + p) && cmd.contains(" -n ")) {
+			return cmd.replaceAll(p, generateOut(f, p));
+		}
+		return cmd + " -n " + generateOut(f, p);
+	}
+
+	
+	private static String generateOut(File f, String p) {
+		if (checkOutput(f, p)) {
+			return p;
+		} else {
+			return generateOut(f, p + "_0");
+		}
 	}
 
 }

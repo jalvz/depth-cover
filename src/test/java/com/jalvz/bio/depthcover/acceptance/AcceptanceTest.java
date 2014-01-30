@@ -128,7 +128,7 @@ public class AcceptanceTest {
 				return r2Writer;
 			}
 			@Override
-			protected boolean fileIsBig(File file) {
+			protected boolean parallelizable(boolean forceSequentialRead) {
 				return true;
 			};
 		});
@@ -169,18 +169,47 @@ public class AcceptanceTest {
 
 		File sum = new File(outDir.getAbsolutePath(), "newname.summary.csv"); 
 		String sumDiskContent = new String(Files.toString(sum, Charsets.UTF_8));
+		System.out.println(sumDiskContent);
 		assertTrue(sumDiskContent.contains("14-5_S5_L001_R1	chr3 105420-105429 (match-1-ini)	1	1	unknown	unknown"));
 		assertTrue(sumDiskContent.contains("14-5_S5_L001_R1	chr3 105477-105482 (match-2-end)	1	2	unknown	unknown"));
-
 		
 		File cov = new File(outDir.getAbsolutePath(), "newname.coverage.csv"); 
+	
 		String covDiskContent = new String(Files.toString(cov, Charsets.UTF_8));
-		
+	
 		File brkdwn = new File(outDir.getAbsolutePath(), "newname.breakdown.csv");
 		String brkdwnDiskContent = new String(Files.toString(brkdwn, Charsets.UTF_8));
 
 		assertFastaAndBed(covDiskContent + brkdwnDiskContent);
 	}
+	
+	
+	
+	@Test(timeout = 10000)
+	public void testBedNoIndex() throws IOException {
+		
+		File outDir = recipient();
+		
+		EndPoint.main(new String[]{"-bam", sampleFile().getAbsolutePath(), "-d", outDir.getAbsolutePath(), 
+				"-bed", simpleBed().getAbsolutePath(), "--ignore-index", "-n", "newname"});
+
+		File sum = new File(outDir.getAbsolutePath(), "newname.summary.csv"); 
+		String sumDiskContent = new String(Files.toString(sum, Charsets.UTF_8));
+		System.out.println(sumDiskContent);
+		assertTrue(sumDiskContent.contains("14-5_S5_L001_R1	chr3 105420-105429 (match-1-ini)	1	1	198022430	0.0"));
+		assertTrue(sumDiskContent.contains("14-5_S5_L001_R1	chr3 105477-105482 (match-2-end)	1	2	198022430	0.0"));
+		
+		File cov = new File(outDir.getAbsolutePath(), "newname.coverage.csv"); 
+	
+		String covDiskContent = new String(Files.toString(cov, Charsets.UTF_8));
+		System.out.println(covDiskContent);
+	
+		File brkdwn = new File(outDir.getAbsolutePath(), "newname.breakdown.csv");
+		String brkdwnDiskContent = new String(Files.toString(brkdwn, Charsets.UTF_8));
+
+		assertBed(covDiskContent + brkdwnDiskContent);
+	}
+	
 	
 	
 	@Test
@@ -199,7 +228,7 @@ public class AcceptanceTest {
 		
 		ConcurrentExecutor multi = new ConcurrentExecutor(new ExecutorStrategy(sampleFile(), recipient()) {
 			@Override
-			protected boolean fileIsBig(File file) {
+			protected boolean parallelizable(boolean forceSequentialRead) {
 				return true;
 			};
 		});
@@ -249,22 +278,11 @@ public class AcceptanceTest {
 	
 	
 	
-	//@Test
-	public void test2() throws IOException {
-		File outDir = recipient();
-		
-		EndPoint.main(new String[]{"-bam", "/media/elements/bams/16.2_raw_merged_f4_sort_rmdup.bam", 
-				"-d", outDir.getAbsolutePath(), "-a", "-bed", "/home/juan/projects/depth-cover/chr2.bed"});
-
-	}
-	
-	
 	private void assertMeanResults(String result) {
-		System.out.println(result);
-		assertTrue(result.contains("14-5_S5_L001_R1	ALL	190078	8817970	3095693981	0.002848"));
-		assertTrue(result.contains("14-5_S5_L001_R1	chr1	15270	706825	249250621	0.002836"));
-		assertTrue(result.contains("14-5_S5_L001_R1	chr2	16463	765881	243199373	0.003149"));
-		assertTrue(result.contains("14-5_S5_L001_R1	chrM	81	3784	16569	0.228378"));
+		assertTrue(result.contains("14-5_S5_L001_R1	ALL	187704	8817970	3095693981	0.002848"));
+		assertTrue(result.contains("14-5_S5_L001_R1	chr1	15075	706825	249250621	0.002836"));
+		assertTrue(result.contains("14-5_S5_L001_R1	chr2	16287	765881	243199373	0.003149"));
+		assertTrue(result.contains("14-5_S5_L001_R1	chrM	80	3784	16569	0.228378"));
 	}
 	
 	
@@ -295,4 +313,15 @@ public class AcceptanceTest {
 		assertTrue(result.contains("14-5_S5_L001_R1	chr2 20160-20265 (match-48)	1	48	47	1.021277"));
 		assertFalse(result.contains("14-5_S5_L001_R1	chrM 1-16569	3	234	unknown	unknown"));
 	}
+	
+	
+	private void assertBed(String result) {
+		assertTrue(result.contains("14-5_S5_L001_R1	1	2842	441238372	6.0E-6"));
+		assertTrue(result.contains("14-5_S5_L001_R1	2	799	441238372	2.0E-6"));
+		assertTrue(result.contains("14-5_S5_L001_R1	chr3 105477-105482 (match-2-end)	1	2	198022430	0.0"));
+		assertTrue(result.contains("14-5_S5_L001_R1	chrM 1-16569	1	2751	16569	0.166033"));
+		assertTrue(result.contains("14-5_S5_L001_R1	chr2 20160-20265 (match-48)	1	48	243199373	0.0"));
+		assertTrue(result.contains("14-5_S5_L001_R1	chrM 1-16569	3	234	16569	0.014123"));
+	}
+
 }

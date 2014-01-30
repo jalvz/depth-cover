@@ -54,6 +54,7 @@ public class IntervalLookupDataSet {
 		
 	/*
  	 * Intervals are identified by [start pos, end pos]
+ 	 * It updates read count
 	 */
 	public final List<IntervalData> intersectionsSE(String sample, String ref, int[] interval) {
 		List<IntervalData> intersections = Lists.newArrayList();

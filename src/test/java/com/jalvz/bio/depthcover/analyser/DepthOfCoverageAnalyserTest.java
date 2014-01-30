@@ -56,8 +56,8 @@ public class DepthOfCoverageAnalyserTest {
 		IntervalDataBuilder idata1 = new IntervalDataBuilder("sample1", "chr1", 0, 10).
 				addIntervalSL(new int[]{2,4}).addIntervalSL(new int[]{4,6});
 		IntervalDataBuilder idata2 = new IntervalDataBuilder("sample1", "chr1", 0, 10).addIntervalSL(new int[]{1,2});
-		queue.put(idata1);
-		queue.put(idata2);
+		queue.put(idata1.build());
+		queue.put(idata2.build());
 		queue.close();
 		
 		Thread t = new Thread(analyser);

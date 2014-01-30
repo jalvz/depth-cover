@@ -51,7 +51,8 @@ public class FilteredSequenceReaderTest {
 		t.start();
 		t.join();
 		while (!queue.isEmpty()) {
-			IntervalData idata = queue.take().build();
+			IntervalData idata = queue.take();
+			idata.prepare();
 			CoverageData cdata = calc.calculate(idata);
 			rsmap.put(cdata.getReferenceName(), cdata.getCoverage());
 		}

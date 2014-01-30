@@ -1,20 +1,9 @@
 package com.jalvz.bio.depthcover.model.idata;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-
-import org.apache.log4j.Logger;
-
-import com.jalvz.bio.depthcover.util.Timer;
-
-
 
 public class IntervalDataBuilder {
 
-	private static final Logger logger = Logger.getLogger(IntervalDataBuilder.class.getName());
-
-	
 	private final IntervalData data;
 
 
@@ -40,11 +29,6 @@ public class IntervalDataBuilder {
 		if (!isValid()) {
 			throw new IllegalStateException("Interval Data object does not contain any interval: " + toString());
 		}
-		Timer timer = new Timer();
-		sort(data.closings);
-		sort(data.openings);
-		logger.debug("Sorting time = " + timer.elapsedTime() + " ms");
-		data.reads = data.openings.size();
 		return data;
 	}
 
@@ -56,6 +40,7 @@ public class IntervalDataBuilder {
 		data.openings.add(interval[0]);
 		data.closings.add(interval[1]);
 		data.totalLenght += (interval[1] - interval[0]);
+		incRead();
 		return this;
 	}
 
@@ -85,6 +70,7 @@ public class IntervalDataBuilder {
 	public IntervalDataBuilder addAllFromData(IntervalData data) {
 		this.data.openings.addAll(data.openings);
 		this.data.closings.addAll(data.closings);
+		this.data.reads += data.reads;
 		this.data.totalLenght += data.totalLenght;
 		return this;
 	}
@@ -104,24 +90,19 @@ public class IntervalDataBuilder {
 		return !data.openings.isEmpty();
 	}
 
+	
+	public void incRead() {
+		data.reads += 1;
+	}
+
 
 	@Override
 	public String toString() {
 		if (isValid()) {
-			return getSampleName() + ", " + getReferenceName() + " with " + data.openings.size() + " reads";
+			return getSampleName() + ", " + getReferenceName() + " with " + data.reads + " reads";
 		}
 		return getSampleName() + ", " + getReferenceName();
 	}
 
-
-
-	private void sort(List<Integer> list) {
-		Collections.sort(list, new Comparator<Integer>() {
-			@Override
-			public int compare(Integer o1, Integer o2) {
-				return o2.compareTo(o1);
-			}
-		});
-	}
 
 }

@@ -23,6 +23,7 @@ public class SAMFileHandler {
 	
 	public static void populateIntervalDataBuilder(final IntervalDataBuilder builder, SAMRecord currentRecord) {
 		if (isAligned(currentRecord)) {
+			builder.incRead();
 			for (int[] interval : parseIntervals(currentRecord)) {
 				builder.addIntervalSL(interval);
 			}

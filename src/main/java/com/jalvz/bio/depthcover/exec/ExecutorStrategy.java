@@ -36,8 +36,6 @@ public class ExecutorStrategy {
 
 	private final boolean hasIndex;
 	
-	private static final long FILE_SIZE_THRESHOLD = 4000000000L; // 4GB
-	
 	
 	public ExecutorStrategy(File sam, File outDir) {
 		HelperReader.init(sam);
@@ -76,17 +74,17 @@ public class ExecutorStrategy {
 	}
 
 		
-	public SequenceReader getSequenceReader(boolean forceSingleRead) {
-		if (parallelizable() && !forceSingleRead) {
-			logger.info("Index found - Using Parallel Reader.");
+	public SequenceReader getSequenceReader(boolean forceSequentialRead) {
+		if (parallelizable(forceSequentialRead)) {
+			logger.info("Index found.");
 			return new ParallelSequenceReader(queue, samFile);
 		}
 		return new ContinuousSequenceReader(queue, samFile);
 	}
 
 	
-	public SequenceReader getPartialSequenceReader(IntervalLookupDataSet intervalLookupDataSet) {
-		if (hasIndex) {
+	public SequenceReader getPartialSequenceReader(IntervalLookupDataSet intervalLookupDataSet, boolean forceSequentialRead) {
+		if (parallelizable(forceSequentialRead)) {
 			logger.info("Index found.");
 			return new FilteredSequenceReader(queue, samFile, intervalLookupDataSet);
 		} 
@@ -99,15 +97,11 @@ public class ExecutorStrategy {
 	}
 	
 
-	private boolean parallelizable() {
-		return hasIndex && fileIsBig(samFile);
-	}
-
-
 	@VisibleForTesting
-	protected boolean fileIsBig(File file) {
-		return file.length() > FILE_SIZE_THRESHOLD;
+	protected boolean parallelizable(boolean forceSequentialRead) {
+		return hasIndex && !forceSequentialRead;
 	}
-	
+
+
 
 }

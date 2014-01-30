@@ -62,7 +62,11 @@ public class FilteredSequenceReader extends SequenceReader {
 			while (intervalsIt.hasNext()) {
 				current = intervalsIt.next();
 				intervalsIt.remove();
+				try {
 				shrinkedIntervals.add(intervalLookupDataSet.intersectionSE(new int[]{current[0], current[1] - 1}, currentIntervalLookupData.getInterval()));
+				} catch (IllegalArgumentException e) {
+					logger.debug(e.getMessage(), e);
+				}
 			}
 			super.transfer(new IntervalDataBuilder(
 					intervalDataBuilder.getSampleName(), currentIntervalLookupData.getId(), currentIntervalLookupData.getReference(), currentIntervalLookupData.getStart(), currentIntervalLookupData.getEnd()).

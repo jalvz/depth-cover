@@ -37,12 +37,15 @@ public class EndPoint {
 		
 			File in = ArgHandler.getIn(argList);
 			File out = ArgHandler.getOutDir(argList, in);
-			boolean lowFlag = ArgHandler.getLowFlag(argList) || ArgValidator.forceSequentialRead(in);
-			boolean printDetails = ArgHandler.getPrintDetailsFlag(argList);
 			long depthLimit = ArgHandler.getDepthLimit(argList);
 			String outName = ArgHandler.getPreffix(argList);
 			File bed = ArgHandler.getBed(argList);
 			File fasta = ArgHandler.getFasta(argList);
+			boolean lowFlag = ArgHandler.getLowFlag(argList);
+			if (bed == null && !lowFlag) {
+				lowFlag = ArgValidator.forceSequentialRead(in);
+			}
+			boolean printDetails = ArgHandler.getPrintDetailsFlag(argList);
 			
 			try {
 				ArgValidator.smoke(in, outName, out, Joiner.on(" ").join(argList));
@@ -66,7 +69,7 @@ public class EndPoint {
 	private static void printHelp() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("USAGE: java -jar depth-cover.jar -bam input.bam [OPTIONS]\n\n");
-		sb.append("  *NOTE*: consider the memory settings for the JVM, ie: java -Xmx2g -jar depth-cover.jar ...\n");
+		sb.append("  *NOTE*: consider the memory and GC settings for the JVM, i.e.: java -XX:+UseParallelGC -Xmx2g -jar depth-cover.jar ...\n");
 		sb.append("  If during execution you see an error like 'java.lang.OutOfMemoryError' you'll need to increase the\n"); 
 		sb.append("  memory allocation with the -Xmx argument. The --ignore-index option can reduce the memory footprint.\n\n");
 		sb.append("OPTIONS:\n");

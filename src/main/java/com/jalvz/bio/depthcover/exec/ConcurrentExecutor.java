@@ -70,7 +70,7 @@ public class ConcurrentExecutor {
 		SequenceReader seqReader;
 		if (intervalsFile != null) {
 			IntervalLookupDataSet intervalsToRead = startIntervalLookupRead(intervalsFile).get();
-			seqReader = factory.getPartialSequenceReader(intervalsToRead);
+			seqReader = factory.getPartialSequenceReader(intervalsToRead, forceSingleRead);
 		} else {
 			seqReader = factory.getSequenceReader(forceSingleRead);
 		}

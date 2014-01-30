@@ -48,7 +48,7 @@ public abstract class SequenceReader implements Runnable {
 	protected void transfer(IntervalDataBuilder intervalDataBuilder) throws InterruptedException {
 		if (intervalDataBuilder.isValid()) {
 			logger.info("Read reference " + intervalDataBuilder.toString());
-			queue.put(intervalDataBuilder);
+			queue.put(intervalDataBuilder.build());
 		}
 	}
 	

@@ -27,7 +27,7 @@ public class IntervalDataBuilderTest {
 		intervalDataBuilder.addIntervalSL(new int[]{3,4});
 		assertTrue(intervalDataBuilder.toString().contains("sample1"));
 		assertTrue(intervalDataBuilder.toString().contains("chr1"));
-		assertTrue(intervalDataBuilder.toString().contains("2 reads"));
+		assertTrue(intervalDataBuilder.toString().contains("reads"));
 	}
 	
 	@Test(expected = IllegalStateException.class) 
@@ -51,8 +51,6 @@ public class IntervalDataBuilderTest {
 		assertTrue(data.getStart() == 0);
 		assertTrue(data.getEnd() == 10);
 		assertTrue(data.getTotalLenght() == 44);
-		assertTrue(data.reads == 3);
-
 	}
 
 }
