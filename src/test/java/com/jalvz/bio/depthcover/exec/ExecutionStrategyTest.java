@@ -97,10 +97,13 @@ public class ExecutionStrategyTest {
 	public void testPartialReader() {
 		SequenceReader reader1 = strategy.getPartialSequenceReader(new IntervalLookupDataSet(), false);
 		assertTrue(reader1 instanceof FilteredSequenceReader);
-		
-		SequenceReader reader2 = new ExecutorStrategy(notIndexedFile(), recipient()).getPartialSequenceReader(
-				new IntervalLookupDataSet(), true);
+
+		SequenceReader reader2 = strategy.getPartialSequenceReader(new IntervalLookupDataSet(), true);
 		assertTrue(reader2 instanceof SkipableSequenceReader);
+
+		SequenceReader reader3 = new ExecutorStrategy(notIndexedFile(), recipient()).getPartialSequenceReader(
+				new IntervalLookupDataSet(), true);
+		assertTrue(reader3 instanceof SkipableSequenceReader);
 	}
 	
 	
