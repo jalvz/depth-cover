@@ -9,7 +9,7 @@ public class WriterUtils {
 	
 	
 	public static String toStr(Number n) {
-		if (n.doubleValue() >= 0) {
+		if (n.floatValue() >= 0) {
 			return n.toString();
 		} else {
 			return "unknown";
