@@ -47,11 +47,11 @@ public class ReferenceSequenceReader extends SafeAsyncReader<Map<String, Long>> 
 		long totalCount = 0;
 		String currentRef = null;
 		long currentSkipCount = 0;
-		String line = currentReaderObj.readLine();
+		String line = consumeLine();
 		while (line != null) {
 			if (line.startsWith(">")) {
 				currentRef = refLookup(line);
-				line = currentReaderObj.readLine();
+				line = consumeLine();
 				continue;
 			}
 			if (currentRef != null) {
@@ -62,7 +62,7 @@ public class ReferenceSequenceReader extends SafeAsyncReader<Map<String, Long>> 
 				totalLocusCount.put(currentRef, savedCount + line.length() - currentSkipCount);
 			}
 			currentSkipCount = 0;
-			line = currentReaderObj.readLine();
+			line = consumeLine();
 		}
     	totalLocusCount.put(Tags.ALL, totalCount);
 	}
@@ -78,6 +78,7 @@ public class ReferenceSequenceReader extends SafeAsyncReader<Map<String, Long>> 
 		return skipCount;
 	}
 	
+	
 	private String refLookup(String comment) {
 		for (String knownRef : knownReferences) {
 			if (comment.contains(knownRef)) {
@@ -92,6 +93,15 @@ public class ReferenceSequenceReader extends SafeAsyncReader<Map<String, Long>> 
 		for (SAMSequenceRecord record : HelperReader.getInstance().getReferences()) {
 			knownReferences.add(record.getSequenceName());
 		}
+	}
+	
+	
+	private String consumeLine() throws IOException {
+		String raw = currentReaderObj.readLine();
+		if (raw != null) {
+			return raw.trim();
+		}
+		return null;
 	}
 
 }

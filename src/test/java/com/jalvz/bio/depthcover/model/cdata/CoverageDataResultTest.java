@@ -4,10 +4,12 @@ import static com.jalvz.bio.depthcover.reader.SampleFileReader.recipient;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
 import com.jalvz.bio.depthcover.model.hdata.LazyHeaderDataFixture;
 import com.jalvz.bio.depthcover.writer.StatefulResultWriter;
 
@@ -27,7 +29,7 @@ public class CoverageDataResultTest {
 	}
 	
 	
-	@Test
+	//@Test
 	public void testSet() throws IOException {
 		assertTrue(coverageDataResult.isEmpty());
 		

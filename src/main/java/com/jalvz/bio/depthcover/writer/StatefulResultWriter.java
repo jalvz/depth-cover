@@ -27,13 +27,13 @@ public class StatefulResultWriter {
 	
 	private static final Logger logger = Logger.getLogger(StatefulResultWriter.class.getName());
 
-	private final DelegatedWriter avgs;
+	private final DelegatedWriter summary;
 	
-	private final DelegatedWriter normal;
+	private final DelegatedWriter coverage;
 
-	private final DelegatedWriter verbose;
+	private final DelegatedWriter breakdown;
 
-	private final DoubleBufferAsyncWriter extraVerbose;
+	private final DoubleBufferAsyncWriter details;
 	
 	private final long depthLimit;
 	
@@ -41,34 +41,34 @@ public class StatefulResultWriter {
 	
 	
 	public StatefulResultWriter(File outDir, String prefix, boolean printDetails, long depthLimit) throws IOException {
-		avgs = new DelegatedWriter(new File(outDir, prefix + Tags.SUMMARY_EXT), getAveragesHeadline());
-		normal = new DelegatedWriter(new File(outDir, prefix + Tags.COVERAGE_EXT), getGlobalHeadline());
-		verbose = new DelegatedWriter(new File(outDir, prefix + Tags.BREAKDOWN_EXT), getReferenceHeadline());
+		summary = new DelegatedWriter(new File(outDir, prefix + Tags.SUMMARY_EXT), getAveragesHeadline());
+		coverage = new DelegatedWriter(new File(outDir, prefix + Tags.COVERAGE_EXT), getGlobalHeadline());
+		breakdown = new DelegatedWriter(new File(outDir, prefix + Tags.BREAKDOWN_EXT), getReferenceHeadline());
 		if (printDetails) {
-			extraVerbose = new DoubleBufferAsyncWriter(new File(outDir, prefix + Tags.DETAILS_EXT), getDetailsHeadline());
+			details = new DoubleBufferAsyncWriter(new File(outDir, prefix + Tags.DETAILS_EXT), getDetailsHeadline());
 		} else {
-			extraVerbose = null;
+			details = null;
 		}
 		this.head = LazyHeaderData.getInstance();
 		this.depthLimit = depthLimit;
 	}
 	
 	
-	public void addAverage(String sample, String label, long totalCover, long reads, String ref) {
+	public void addToSummary(String sample, String label, long totalCover, long reads, String ref) {
 		if (totalCover < depthLimit) {
 			long totalBases = head.get(ref);
 			double proportion = getProportion(totalBases, totalCover);
-			avgs.addLine(Lists.newArrayList(sample, label, toStr(reads), toStr(totalCover), toStr(totalBases), toStr(proportion)));
+			summary.addLine(Lists.newArrayList(sample, label, toStr(reads), toStr(totalCover), toStr(totalBases), toStr(proportion)));
 		}
 	}
 	
 	
-	public void addCoverage(String sample, String label, Map<Integer, Long> data, String ref) {
+	public void addBreakdownCoverage(String sample, String label, Map<Integer, Long> data, String ref) {
 		long totalBases = head.get(ref);
 		for (int depth : data.keySet()) {
 			if (depth < depthLimit) {
 				double proportion = getProportion(totalBases, data.get(depth));
-				verbose.addLine(Lists.newArrayList(sample, label, toStr(depth), toStr(data.get(depth)), toStr(totalBases), toStr(proportion)));
+				breakdown.addLine(Lists.newArrayList(sample, label, toStr(depth), toStr(data.get(depth)), toStr(totalBases), toStr(proportion)));
 			}
 		}
 	}
@@ -78,20 +78,20 @@ public class StatefulResultWriter {
 		long totalBases = head.getTotal();
 		for (int depth : data.keySet()) {
 			double proportion = getProportion(totalBases, data.get(depth));
-			normal.addLine(Lists.newArrayList(sample, toStr(depth), toStr(data.get(depth)), toStr(totalBases), toStr(proportion)));
+			coverage.addLine(Lists.newArrayList(sample, toStr(depth), toStr(data.get(depth)), toStr(totalBases), toStr(proportion)));
 		}
 	}
 	
 	
 	public DoubleBufferAsyncWriter getAsyncWriter() {
-		return extraVerbose;
+		return details;
 	}
 
 	
 	public void flush() {
-		avgs.write();
-		normal.write();
-		verbose.write();
+		summary.write();
+		coverage.write();
+		breakdown.write();
 	}
 
 	
@@ -100,11 +100,11 @@ public class StatefulResultWriter {
 			logger.warn("*** WARNING : No header data present ***");
 		}
 		flush();
-		avgs.close();
-		normal.close();
-		verbose.close();
-		if (extraVerbose != null) {
-			extraVerbose.finalise();
+		summary.close();
+		coverage.close();
+		breakdown.close();
+		if (details != null) {
+			details.finalise();
 		}
 	}
 	
@@ -123,7 +123,7 @@ public class StatefulResultWriter {
 	
 	@Override
 	public String toString() {
-		return normal.toString() + "\n\n\t\t* * *\n\n" + verbose.toString();
+		return coverage.toString() + "\n\n\t\t* * *\n\n" + breakdown.toString();
 	}
 
 

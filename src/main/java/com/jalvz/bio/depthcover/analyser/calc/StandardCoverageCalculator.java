@@ -35,8 +35,7 @@ public class StandardCoverageCalculator implements CoverageCalculator {
 		Timer timer = new Timer();
 		Map<Integer, Long> countMap = Maps.newHashMap();
 
-		int[][] intervalEvents = build(intervalData.getOpenings(),
-				intervalData.getClosings());
+		int[][] intervalEvents = build(intervalData.getOpenings(), intervalData.getClosings());
 		int currentSpanPosition = intervalEvents[0][0];
 		send(intervalData.getReferenceName(), 0, intervalData.getStart(), currentSpanPosition);
 		int depthState = intervalEvents[0][1];

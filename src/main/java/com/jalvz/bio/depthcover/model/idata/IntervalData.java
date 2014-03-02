@@ -19,9 +19,9 @@ public class IntervalData implements Iterable<int[]> {
 	
 	protected final List<Integer> closings;
 	
-	protected int totalLenght;
+	protected long totalLenght;
 	
-	protected int reads;
+	protected long reads;
 	
 	private final String sampleName;
 	
@@ -84,12 +84,12 @@ public class IntervalData implements Iterable<int[]> {
 	}
 
 	
-	public int getTotalLenght() {
+	public long getTotalLenght() {
 		return totalLenght;
 	}
 
 
-	public int getReads() {
+	public long getReads() {
 		return reads;
 	}
 

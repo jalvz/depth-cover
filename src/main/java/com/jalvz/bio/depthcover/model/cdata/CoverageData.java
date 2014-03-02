@@ -11,17 +11,17 @@ public class CoverageData {
 	
 	private final String sampleName, referenceName, originalReferenceName;
 	
-	private final long reads, meanCoverage;
+	private final long reads, totalCoverage;
 
 	
-	public CoverageData(Map<Integer, Long> coverage, String sampleName, String referenceName, String originalName, int meanCoverage, int reads) {
+	public CoverageData(Map<Integer, Long> coverage, String sampleName, String referenceName, String originalName, long totalCoverage, long reads) {
 		this.coverage = CoverageDataResultHelper.newMap();
 		this.coverage.putAll(coverage);
 		this.sampleName = sampleName;
 		this.referenceName = referenceName;
 		this.originalReferenceName = originalName;
 		this.reads = reads;
-		this.meanCoverage = meanCoverage;
+		this.totalCoverage = totalCoverage;
 	}
 	
 	
@@ -55,8 +55,8 @@ public class CoverageData {
 	}
 
 
-	public long getMeanCoverage() {
-		return meanCoverage;
+	public long getTotalCoverage() {
+		return totalCoverage;
 	}
 	
 

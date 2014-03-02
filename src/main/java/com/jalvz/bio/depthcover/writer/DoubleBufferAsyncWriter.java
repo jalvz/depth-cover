@@ -13,7 +13,9 @@ public class DoubleBufferAsyncWriter implements Runnable {
 
 	private static final Logger logger = Logger.getLogger(DoubleBufferAsyncWriter.class.getName());
 
-	private static final int BUFFER_SIZE = 3000;
+	private static final int BUFFER_LINES = 3000;
+	
+	private static final int EST_LINE_SIZE = 50;
 	
 	private final DelegatedWriter bufferedWriter0;
 	
@@ -29,8 +31,8 @@ public class DoubleBufferAsyncWriter implements Runnable {
 	
 	
 	protected DoubleBufferAsyncWriter(File out, List<String> header) throws IOException {
-		bufferedWriter0 = new DelegatedWriter(out, header, BUFFER_SIZE * 50);
-		bufferedWriter1 = new DelegatedWriter(out, header, BUFFER_SIZE * 50);
+		bufferedWriter0 = new DelegatedWriter(out, header, BUFFER_LINES * EST_LINE_SIZE);
+		bufferedWriter1 = new DelegatedWriter(out, header, BUFFER_LINES * EST_LINE_SIZE);
 		bufferedWriter1.clear();
 	}
 	
@@ -39,7 +41,7 @@ public class DoubleBufferAsyncWriter implements Runnable {
 	public void run() {
 		logger.debug("Started Writer thread - Id = " + Thread.currentThread().getId());
 		while (!finished) {
-			while (linesInBuffer < BUFFER_SIZE && !finished) {
+			while (linesInBuffer < BUFFER_LINES && !finished) {
 				Timer.sleep(2);
 			}
 			try {
@@ -57,7 +59,7 @@ public class DoubleBufferAsyncWriter implements Runnable {
 	public synchronized void addLine(List<String> line) {
 		while (lock) {
 			logger.trace("waiting to buffer swap on async writer");
-			Timer.sleep(1);
+			Timer.sleep(2);
 		}
 		if (activeBuffer == 0) {
 			bufferedWriter0.addLine(line);

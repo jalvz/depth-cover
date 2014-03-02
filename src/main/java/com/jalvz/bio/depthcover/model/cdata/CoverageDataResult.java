@@ -34,18 +34,18 @@ public class CoverageDataResult {
 		
 	public void populateWriter(final StatefulResultWriter writer) {
 		writer.overrideTotalBasesCount(uniqueRefs());
-		addSummary(writer);
+		addSummaryAll(writer);
 		for (CoverageData coverageData : rawCoverageResults) {
-			writer.addAverage(coverageData.getSampleName(), coverageData.getReferenceName(), 
-					coverageData.getMeanCoverage(), coverageData.getReads(), coverageData.getOriginalReferenceName());
-			writer.addCoverage(coverageData.getSampleName(), coverageData.getReferenceName(), 
+			writer.addToSummary(coverageData.getSampleName(), coverageData.getReferenceName(), 
+					coverageData.getTotalCoverage(), coverageData.getReads(), coverageData.getOriginalReferenceName());
+			writer.addBreakdownCoverage(coverageData.getSampleName(), coverageData.getReferenceName(), 
 					accumulateOnPreviousValues(coverageData.getCoverage()), coverageData.getOriginalReferenceName());
 			writer.flush();
 		}
 	}
 	
 	
-	private void addSummary(final StatefulResultWriter writer) {
+	private void addSummaryAll(final StatefulResultWriter writer) {
 		List<Map<Integer, Long>> breakdownResults = Lists.newArrayList();
 		Set<String> uniqueSamples = Sets.newHashSet();
 		long overallMeanCoverage = 0;
@@ -53,11 +53,11 @@ public class CoverageDataResult {
 		for (CoverageData coverageData : rawCoverageResults) {
 			uniqueSamples.add(coverageData.getSampleName());
 			breakdownResults.add(coverageData.getCoverage());
-			overallMeanCoverage += coverageData.getMeanCoverage();
+			overallMeanCoverage += coverageData.getTotalCoverage();
 			overallReads += coverageData.getReads();
 		}
 		String samplesStr = samplesLabel(uniqueSamples);
-		writer.addAverage(samplesStr, Tags.ALL, overallMeanCoverage, overallReads, Tags.ALL);
+		writer.addToSummary(samplesStr, Tags.ALL, overallMeanCoverage, overallReads, Tags.ALL);
 		writer.addCoverage(samplesStr, merge(breakdownResults));
 		writer.flush();
 	}

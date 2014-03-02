@@ -53,7 +53,7 @@ public class EndPoint {
 				UserConfiguration config = new UserConfiguration(lowFlag, printDetails, depthLimit, outName, bed, fasta);
 				new ConcurrentExecutor(new ExecutorStrategy(in, out)).execute(config);
 			} catch (IllegalArgumentException e) {
-				logger.debug(e.getMessage(), e);
+				logger.info(e.getMessage());
 			}
 			
 			if (ExitStatus.getStatus() == 0) {
