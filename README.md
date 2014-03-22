@@ -3,6 +3,7 @@ depth-cover
 
 Fast Depth of Coverage Analyser (for BAM, BED files)
 
+Version 1.0.2
 
 
 **Installation and execution:**
@@ -11,7 +12,7 @@ Fast Depth of Coverage Analyser (for BAM, BED files)
     To run the program only the file depth-cover.jar is needed.
     Execute depth-cover with:
     
-    java -XmxMAX_MEMORY_ALLOCATION -XX:+UseParallelGC -jar depth-cover.jar -bam BAM_FILE [OPTIONS]
+    java -XmxMAX_MEMORY_ALLOCATION -jar depth-cover.jar -bam BAM_FILE [OPTIONS]
 
     Options are detailed in the help. To see the help type:
     
@@ -45,7 +46,7 @@ Fast Depth of Coverage Analyser (for BAM, BED files)
     consumption depend on the size of the BAM file. In a modern desktop computer, it can process 
     15-30 million reads per minute.
     
-    Recommended memory allocation is 20% - 50% of the size of the BAM file - i.e.: if your BAM is 10Gb,
+    Recommended memory allocation is 15% - 50% of the size of the BAM file - i.e.: if your BAM is 10Gb,
     execute like: 
     
     java -Xmx2g -XX:+UseParallelGC -jar depth-cover.jar ARGUMENTS
