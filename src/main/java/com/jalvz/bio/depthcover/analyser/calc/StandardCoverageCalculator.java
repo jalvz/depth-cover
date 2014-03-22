@@ -1,5 +1,7 @@
 package com.jalvz.bio.depthcover.analyser.calc;
 
+import gnu.trove.list.array.TIntArrayList;
+
 import java.util.List;
 import java.util.Map;
 
@@ -74,7 +76,7 @@ public class StandardCoverageCalculator implements CoverageCalculator {
 	 * @return array of [position, number of sequences starting at pos, number
 	 *         of sequences finished at pos] sorted by pos
 	 */
-	private int[][] build(List<Integer> openings, List<Integer> closings) {
+	private int[][] build(TIntArrayList openings, TIntArrayList closings) {
 		Timer timer = new Timer();
 		int[][] sortedEvents = init(openings.size() + closings.size());
 		int cidx = 0;
@@ -128,12 +130,12 @@ public class StandardCoverageCalculator implements CoverageCalculator {
 		return cidx;
 	}
 
-	private int last(List<Integer> list) {
+	private int last(TIntArrayList list) {
 		return list.get(list.size() - 1);
 	}
 
-	private int removeLast(final List<Integer> list) {
-		return list.remove(list.size() - 1);
+	private int removeLast(final TIntArrayList list) {
+		return list.removeAt(list.size() - 1);
 	}
 
 }

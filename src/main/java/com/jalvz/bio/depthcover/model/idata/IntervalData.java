@@ -1,5 +1,8 @@
 package com.jalvz.bio.depthcover.model.idata;
 
+import gnu.trove.list.array.TIntArrayList;
+
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -15,9 +18,10 @@ public class IntervalData implements Iterable<int[]> {
 	private static final Logger logger = Logger.getLogger(IntervalData.class.getName());
 
 
-	protected final List<Integer> openings;
+
+	protected final TIntArrayList openings;
 	
-	protected final List<Integer> closings;
+	protected final TIntArrayList closings;
 	
 	protected long totalLenght;
 	
@@ -37,8 +41,8 @@ public class IntervalData implements Iterable<int[]> {
 	
 	
 	public IntervalData(String sample, String referenceId, String referenceName, int start, int end) {
-		this.openings = Lists.newArrayList();
-		this.closings = Lists.newArrayList();
+		this.openings = new TIntArrayList();
+		this.closings = new TIntArrayList();
 		this.sampleName = sample;
 		this.referenceName = referenceId;
 		this.originalReferenceName = referenceName;
@@ -49,12 +53,12 @@ public class IntervalData implements Iterable<int[]> {
 	}
 
 
-	public List<Integer> getOpenings() {
+	public TIntArrayList getOpenings() {
 		return openings;
 	}
 
 
-	public List<Integer> getClosings() {
+	public TIntArrayList getClosings() {
 		return closings;
 	}
 
@@ -123,8 +127,8 @@ public class IntervalData implements Iterable<int[]> {
 		@Override
 		public void remove() {
 			if (cidx < openings.size() - 1) {
-				openings.remove(cidx + 1);
-				closings.remove(cidx + 1);
+				openings.removeAt(cidx + 1);
+				closings.removeAt(cidx + 1);
 			}
 		}
 		
@@ -138,20 +142,14 @@ public class IntervalData implements Iterable<int[]> {
 	 */
 	public void prepare() {
 		Timer timer = new Timer();
-		sort(closings);
-		sort(openings);
+		openings.sort();
+		closings.sort();
+		openings.reverse();
+		closings.reverse();
+		
+		
 		logger.trace("Sorting time = " + timer.elapsedTime() + " ms");
 	}
 	
 	
-	
-	private void sort(List<Integer> list) {
-		Collections.sort(list, new Comparator<Integer>() {
-			@Override
-			public int compare(Integer o1, Integer o2) {
-				return o2.compareTo(o1);
-			}
-		});
-	}
-
 }

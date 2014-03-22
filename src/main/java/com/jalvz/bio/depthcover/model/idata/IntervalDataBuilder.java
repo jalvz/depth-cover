@@ -51,6 +51,8 @@ public class IntervalDataBuilder {
 	public final IntervalDataBuilder addIntervalSL(int[] interval) {
 		data.openings.add(interval[0]);
 		data.closings.add(interval[0] + interval[1]);
+		
+		
 		data.totalLenght += (interval[1]);
 		return this;
 	}
@@ -70,6 +72,9 @@ public class IntervalDataBuilder {
 	public IntervalDataBuilder addAllFromData(IntervalData data) {
 		this.data.openings.addAll(data.openings);
 		this.data.closings.addAll(data.closings);
+		
+
+		
 		this.data.reads += data.reads;
 		this.data.totalLenght += data.totalLenght;
 		return this;

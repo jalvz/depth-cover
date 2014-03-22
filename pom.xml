@@ -3,8 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.jalvz.bio</groupId>
 	<artifactId>depth-cover</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<repositories>
+		<repository>
+			<id>trove-repo-01</id>
+			<name>trove</name>
+			<url>file:${project.basedir}/lib</url>
+		</repository>
 		<repository>
 			<id>samtools-repo-01</id>
 			<name>samtools</name>
@@ -16,6 +21,11 @@
 			<groupId>com.samtools</groupId>
 			<artifactId>samtools</artifactId>
 			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>gnu.trove</groupId>
+			<artifactId>trove</artifactId>
+			<version>3.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

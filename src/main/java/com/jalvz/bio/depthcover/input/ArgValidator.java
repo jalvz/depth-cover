@@ -11,9 +11,9 @@ public class ArgValidator {
 	
 	private static final Logger logger = Logger.getLogger(ArgValidator.class.getName());
 	
-	public static final double MIN_MEM_REQUIRED_FACTOR = 0.1d;
+	public static final double MIN_MEM_REQUIRED_FACTOR = 0.07d;
 	
-	public static final double MIN_PARALLEL_REQUIRED_FACTOR = 0.4d;
+	public static final double MIN_PARALLEL_REQUIRED_FACTOR = 0.35d;
 	
 	private static final long FILE_SIZE_THRESHOLD = 4000000000L; // 4GB
 	
