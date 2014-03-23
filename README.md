@@ -3,7 +3,7 @@ depth-cover
 
 Fast Depth of Coverage Analyser (for BAM, BED files)
 
-Version 1.0.2
+Version 1.0.3
 
 
 **Installation and execution:**
@@ -70,7 +70,7 @@ Version 1.0.2
     Processing intervals in a not indexed BAM file takes as much time as it would take for the whole genome.
     It is highly recommended to use indexed BAM files for interval processing.
     
-    depth-cover uses samtools-1.52.944. Any bug in this library might affect depth-cover as well.
+    depth-cover uses samtools-1.108. Any bug in this library might affect depth-cover as well.
 
 
 
