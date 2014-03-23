@@ -13,7 +13,7 @@ public class IntervalDataBuilderFactory {
 	
 	private static final LazyHeaderData head = LazyHeaderData.getInstance();
 	
-	public static IntervalDataBuilder newNullableDataBuilder(SAMRecordIterator recordIterator) {
+	protected static IntervalDataBuilder newNullableDataBuilder(SAMRecordIterator recordIterator) {
 	 	if (recordIterator.hasNext()) {
 	 		return newSafeDataBuilder(recordIterator.next(), true);
     	}
@@ -21,7 +21,7 @@ public class IntervalDataBuilderFactory {
 	}
 	
 	
-	public static IntervalDataBuilder newSafeDataBuilder(SAMRecord record, boolean process) {
+	protected static IntervalDataBuilder newSafeDataBuilder(SAMRecord record, boolean process) {
 		String reference = record.getReferenceName();
 		int refSize = new Long(head.get(reference)).intValue();
 		IntervalDataBuilder builder = new IntervalDataBuilder(record.getReadGroup().getSample(), reference, 0, refSize);

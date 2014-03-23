@@ -2,8 +2,6 @@ package com.jalvz.bio.depthcover.reader;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
-
 import net.sf.samtools.SAMFileReader;
 import net.sf.samtools.SAMRecord;
 import net.sf.samtools.SAMRecordIterator;

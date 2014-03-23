@@ -2,22 +2,14 @@ package com.jalvz.bio.depthcover.model.idata;
 
 import gnu.trove.list.array.TIntArrayList;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
-
 import org.apache.log4j.Logger;
-
-import com.google.common.collect.Lists;
 import com.jalvz.bio.depthcover.util.Timer;
+
 
 public class IntervalData implements Iterable<int[]> {
 	
 	private static final Logger logger = Logger.getLogger(IntervalData.class.getName());
-
-
 
 	protected final TIntArrayList openings;
 	

@@ -2,7 +2,6 @@ package com.jalvz.bio.depthcover.analyser.calc;
 
 import gnu.trove.list.array.TIntArrayList;
 
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
